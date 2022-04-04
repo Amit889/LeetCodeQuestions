@@ -1,0 +1,42 @@
+Solution : Using HashMap
+
+class Solution {
+
+    public boolean canCross(int[] stones) {
+        int n=stones.length;
+        Map<Integer,HashSet<Integer>> map=new HashMap<>();
+        
+        for(int i=0;i<n;i++){
+            map.put(stones[i],new HashSet<Integer>());
+        }
+        map.get(stones[0]).add(0);
+        for(int i=0;i<n-1;i++){
+            int stone = stones[i];
+            HashSet<Integer> set=map.get(stone);
+            for(Integer a: set){
+                if(map.containsKey(stone+a+1)){
+                    if(a+1>0){
+                        map.get(stone+a+1).add(a+1);
+                    }
+                }
+                if(map.containsKey(stone+a-1)){
+                    if(a-1>0){
+                        map.get(stone+a-1).add(a-1);
+                    }
+                }
+                if(map.containsKey(stone+a)){
+                    if(a>0){
+                        map.get(stone+a).add(a);
+                    }
+                }
+            }
+        }
+        if(map.get(stones[n-1]).size()==0) return false;
+           else return true;
+    }
+
+
+}
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(N)

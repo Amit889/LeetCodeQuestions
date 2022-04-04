@@ -1,0 +1,35 @@
+class Solution {
+    
+    public boolean isvalid(char c){
+        if(c>=65&&c<=90) return true;  //check for capital letter
+        if(c>=97&&c<=122)  return true; // check for small letter
+        if(c>=48&&c<=57)  return true; //check for numbers
+        
+        return false;
+    }
+    public boolean isPalindrome(String s) {
+        int n=s.length();
+        int i=0,j=n-1;
+        while(i<j){
+            while(i<n&&isvalid(s.charAt(i))==false) i++;
+            while(j>=0&&isvalid(s.charAt(j))==false) j--;
+          
+            if(i<j){
+               
+        
+                 if(!s.substring(i,i+1).toLowerCase().equals(s.substring(j,j+1).toLowerCase())){ 
+                    
+                    return false;
+                }else{
+                    i++;
+                    j--;
+                }
+            }
+        }
+        
+        return true;
+    }
+}
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(1)

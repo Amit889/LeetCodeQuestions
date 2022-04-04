@@ -1,0 +1,72 @@
+Solution 1 : Using Two Pointer
+
+ public List<List<Integer>> threeSum(int[] nums) {
+          int n=nums.length;
+        Arrays.sort(nums);
+
+       LinkedList<LinkedList<Integer>> li=new LinkedList<LinkedList<Integer>>();
+        for(int i=0;i<n-2;i++){
+
+          if(i==0||(i>0&&nums[i]!=nums[i-1])){   
+
+            int val=0-nums[i];
+            int j=i+1,k=n-1;
+
+            while(j<k){
+             
+                if(nums[j]+nums[k]==val){
+                  LinkedList<Integer> temp=new LinkedList<>();
+                    temp.add(nums[i]);
+                    temp.add(nums[j]);
+                    temp.add(nums[k]);
+                    li.add(temp);
+                     while(j<k&&nums[j]==nums[j+1])  j++;
+                     while(k>j&&nums[k]==nums[k-1])  k--;
+                    j++;
+                }else if(nums[j]+nums[k]<val){ 
+                    j++; 
+                }else{
+                      k--;
+                }
+                
+              }
+            }
+        
+        }
+        return (List)li;
+    }
+
+Solution 2: Solution  Using HashMap
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        
+        Arrays.sort(nums);
+        
+        for(int i = 0 ; i < nums.length ; i++){
+            
+            Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+            
+            int targetSum = 0 - nums[i];
+            
+                for(int j = 0 ; j < nums.length && i!=j ; j++){
+                    
+                    if(map.containsKey(nums[j])){
+                        List<Integer> list = new ArrayList<>();
+                        list.add(nums[i]);
+                        list.add(nums[map.get(nums[j])]);
+                        list.add(nums[j]);
+                        if(!ans.contains(list))
+                        ans.add(list);
+                    } else {
+                        map.put(targetSum - nums[j], j);
+                    }                    
+                }
+        }
+        
+        return ans;
+    }
+}
+

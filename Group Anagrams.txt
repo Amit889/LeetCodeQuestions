@@ -1,0 +1,119 @@
+Approach 1 : Pre-process the occurrence of the number of alphabet in string than match
+
+class Solution {
+    public boolean isSame(int[] arr1,int[] arr2){
+        for(int i=0;i<26;i++){
+            if(arr1[i]!=arr2[i]) return false;
+        }
+        return true;
+    }
+    public List<List<String>> groupAnagrams(String[] strs) {
+        int n=strs.length;
+        int[][] arr=new int[n][26];
+//Storing the number of count of alphabets in each String
+        for(int i=0;i<n;i++){
+            int len=strs[i].length();
+            for(int j=0;j<len;j++){
+                arr[i][strs[i].charAt(j)-'a']++;
+            }
+        }
+        ArrayList<ArrayList<String>> ans=new ArrayList<>();
+        boolean[] vis=new boolean[n];
+        for(int i=0;i<n;i++){
+            if(vis[i]==true) continue;
+            vis[i]=true;
+            ArrayList<String> al=new ArrayList<>();
+            al.add(strs[i]);
+            for(int j=i+1;j<n;j++){
+                if(isSame(arr[i],arr[j])) {
+                    al.add(strs[j]);
+                    vis[j]=true;
+                }
+            }
+            ans.add(al);
+        }
+        return (List)ans;
+    }
+}
+
+Time Complexity : O(N*N)
+Space Complexity: O(N)
+
+Approach 2 : Using HashMap
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        int n=strs.length;
+       
+        HashMap<String,ArrayList<String>> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            String original=strs[i];
+            char[] c=original.toCharArray();
+            Arrays.sort(c);
+            String shorted=String.valueOf(c);
+            
+            if(map.containsKey(shorted)){
+                map.get(shorted).add(original);
+            }else{
+                ArrayList<String> al=new ArrayList<>();
+                al.add(original);
+                map.put(shorted,al);
+            }
+            
+        }
+        
+        ArrayList<ArrayList<String>> ans=new ArrayList<>();
+        for(Map.Entry<String,ArrayList<String>> m: map.entrySet()){
+            ans.add(m.getValue());
+        }
+        return (List)ans;
+    }
+}
+
+Time Complexity : O(N*k*log(k)) , N->  size of array , K-> length of String
+Space Complexity: O(1)
+
+Approach 3:  By  merging the Approach 1 and 2 , By storing the occurrence of alphabet in each string and using it as key for HashMap
+
+class Solution {
+//Method to generate the key
+    public String getKey(int[] arr){
+        StringBuffer key=new StringBuffer();
+        for(int i=0;i<26;i++){
+            key.append(arr[i]+"#");// here I append hash("#") to make difference between number , having 
+                                                       // number of digit greater than 1
+        }
+        return key.toString();
+    }
+    public List<List<String>> groupAnagrams(String[] strs) {
+        int n=strs.length;
+       
+        HashMap<String,ArrayList<String>> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+           String original=strs[i];
+            int[] arr=new int[26];
+            for(int j=0;j<original.length();j++){
+                arr[original.charAt(j)-'a']++;
+            }
+            String mykey=getKey(arr);
+           
+            if(map.containsKey(mykey)){
+                map.get(mykey).add(original);
+            }else{
+                ArrayList<String> al=new ArrayList<>();
+                al.add(original);
+                map.put(mykey,al);
+            }
+            
+        }
+        
+        ArrayList<ArrayList<String>> ans=new ArrayList<>();
+        for(Map.Entry<String,ArrayList<String>> m: map.entrySet()){
+            ans.add(m.getValue());
+        }
+        return (List)ans;
+    }
+}
+
+Time Complexity : O(N*k) 
+Space Complexity: O(1)

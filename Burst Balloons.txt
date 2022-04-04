@@ -1,0 +1,34 @@
+Approach : Using Dynamic programming  and recursion
+
+class Solution {
+    int[][] dp;
+    public int getvalue(int[] arr,int pos){
+        if(pos==-1||pos==arr.length){
+            return 1;
+        }
+        
+         return arr[pos];
+    }
+    public int find(int[] arr,int i,int j){
+        if(i>j) return 0;
+     
+        if(dp[i][j]!=0) return dp[i][j];
+        
+        int max=0;
+        for(int k=i;k<=j;k++){
+          int val=find(arr,i,k-1)+getvalue(arr,i-1)*arr[k]*getvalue(arr,j+1)+find(arr,k+1,j);
+            max=Math.max(max,val);
+        }
+        dp[i][j]=max;
+        return dp[i][j];
+    }
+    public int maxCoins(int[] nums) {
+        int n=nums.length;
+        dp=new int[n][n];
+        
+      return  find(nums,0,n-1);
+        
+    }
+}
+
+

@@ -1,0 +1,24 @@
+class Solution {
+    public String reverseWords(String s) {
+        int n=s.length();
+        StringBuffer ans=new StringBuffer();
+        StringBuffer temp=new StringBuffer();
+        for(int i=0;i<n;i++){
+            char c=s.charAt(i);
+            if(i+1==n||c==' '){
+                if(i+1==n){
+                    temp.append(c);
+                    ans.append(temp.reverse());
+                }else{
+                    ans.append(temp.reverse()+" ");
+                }    
+                temp.delete(0,temp.length());
+            }else{
+                temp.append(c);
+            }
+        }
+        return ans.toString();
+    }
+}
+Time Complexity: O(N)
+Space Complexity: O(1)

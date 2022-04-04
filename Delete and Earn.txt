@@ -1,0 +1,21 @@
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+     
+        int include[]=new int[10001];
+        int exclude[]=new int[10001];
+        
+        int arr[]=new int[10001];
+        for(int i=0;i<nums.length;i++){
+            arr[nums[i]]++;
+        }
+        int max=Integer.MIN_VALUE;
+        for(int i=1;i<=10000;i++){
+            include[i]=i*arr[i]+exclude[i-1];
+            exclude[i]=Math.max(include[i-1],exclude[i-1]);
+            
+            max=Math.max(max,Math.max(include[i],exclude[i]));
+            
+        }
+        return max;
+    }
+}

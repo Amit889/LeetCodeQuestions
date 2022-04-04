@@ -1,0 +1,58 @@
+Approach : Using BackTracking (As same ans repeat multiple time we use HashSet)
+
+class Solution {
+    public void find(HashSet<List<Integer>> ans,List<Integer> al,int[] arr,int sum,int ind,int tar){
+       if(sum>tar) return;
+        if(sum==tar){
+            List<Integer> temp=new ArrayList<Integer>();
+            for(Integer i: al){
+                temp.add(i);
+            }
+            ans.add(temp);
+            return;
+        }
+        if(ind>=arr.length) return;
+        find(ans,al,arr,sum,ind+1,tar);
+        sum +=arr[ind];
+        al.add(arr[ind]);
+         find(ans,al,arr,sum,ind,tar);
+         find(ans,al,arr,sum,ind+1,tar);
+        al.remove(al.size()-1);
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+         HashSet<List<Integer>> ans=new HashSet<>();
+         List<Integer> al=new ArrayList<>();
+         find(ans,al,candidates,0,0,target);
+        List<List<Integer>> ans2=new ArrayList<>();
+        for(List<Integer> i: ans){
+            ans2.add(i);
+        }
+        return ans2;
+    }
+}
+
+Approach 2: Another Approach Without HashSet
+
+class Solution {
+    List<List<Integer>>combinations;
+    void find(int index,int candidates[],int target,List<Integer>combination){
+        if(target==0){
+            combinations.add(new ArrayList<>(combination));
+            return ;
+        }
+        if(target<0||index>=candidates.length)return ;
+        for(int i=index;i<candidates.length;i++){
+            combination.add(candidates[i]);
+            find(i,candidates,target-candidates[i],combination);
+            combination.remove(combination.size()-1);
+        }
+        return ;
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        combinations=new ArrayList<>();
+        find(0,candidates,target,new ArrayList<>());
+        return combinations;
+        
+    }
+}
+

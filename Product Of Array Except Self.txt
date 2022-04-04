@@ -1,0 +1,31 @@
+Solution : Using left and right array concept
+
+class Solution {
+
+    public int[] productExceptSelf(int[] arr) {
+       int  n=arr.length;
+       int[] left=new int[n];
+       int[] right=new int[n];
+        int mul1=1,mul2=1;
+        for(int i=0;i<n;i++){
+            
+            mul1 *=arr[i];
+            left[i]=mul1;
+            
+            mul2 *=arr[n-i-1];
+            right[n-i-1]=mul2;
+            
+        }
+        arr[0]=right[1];
+        arr[n-1]=left[n-2];
+        for(int i=1;i<n-1;i++){
+           arr[i]=left[i-1]*right[i+1];
+        }
+        
+        return arr;
+    }
+
+}
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(1)
